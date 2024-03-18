@@ -1,0 +1,121 @@
+
+{% extends 'admin/base/base.html' %}
+{% load static %}
+
+<html lang="en">
+{% block body %} 
+<body>
+    <div id="main-wrapper">
+        {% include 'admin/base/nav-header.html' %}
+		{% include 'admin/base/header.html' %}
+       <div class="deznav">
+            <div class="deznav-scroll">
+				{% include 'admin/base/sidebar.html' %}
+			</div>
+        </div>
+        <div class="content-body">
+            <!-- row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Edit Category</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    <form class="needs-validation" id="jobpost" method="POST">
+										{% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Sub category
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+														<input data-rule-required="true" value="{{subCategory.slug}}" name="slug" id="slug" type="hidden" class="form-control" id="validationCustom01"  placeholder="Enter a Subcategory.." required>
+
+														<input data-rule-required="true" value="{{subCategory.name}}" name="subCategory_name"id="subCategory_name" type="text" class="form-control" id="validationCustom01"  placeholder="Enter a Subcategory.." required>
+														<div class="invalid-feedback">
+															Please enter a Job title.
+														</div>
+                                                    </div>
+                                                </div>
+												{% if subCategory.parent_id != None %}
+												<div class="mb-3 row">
+													<label class="col-lg-4 col-form-label" for="validationCustom01">Job Category
+														<span class="text-danger">*</span>
+													</label>
+													<div class="col-lg-6">
+														<select data-rule-required="true" class="form-select" id="category_id" name="category">
+															<option  disabled selected >Please select  category</option>
+															{% for i in category %}
+															<option {% if subCategory.parent_id == i.id %} selected {% endif %} value="{{i.id}}">{{i.name}}</option>
+															{% endfor %}
+														</select>														
+														<div class="invalid-feedback">
+															Please enter a Job title.
+														</div>
+													</div>
+												</div>
+												{% endif %}
+											</div>
+                                            <div class="mb-3 row">
+                                                <div class="col-lg-8">
+                                                    <button type="button" onclick="sendMessage()" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="http://dexignzone.com/" target="_blank">DexignZone</a> 2022</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>  
+    function sendMessage(){
+        if(!$('#jobpost').valid()){
+            return ;
+        }else{
+			let category_id = $('#category_id').val()
+			let name = $('#subCategory_name').val()
+			let slug = $('#slug').val()
+			let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+			$.ajax({
+                type: "POST",
+                url: "/admin/edit-category/"+slug,
+                headers: { 'X-CSRFToken': csrftoken },
+                data:
+                {
+					name:name,
+					parent:category_id
+      
+                },
+                success: function (res) {
+					toastr.success('Category Updated !!!!!');
+					$('#category').trigger("reset");                  
+                  
+                },
+                error: function (res) {
+					toastr.error(res.responseJSON.message);                  
+                 
+                },
+      
+              });
+            
+		}
+		}    
+</script> 
+
+{% endblock body %}
+</html>

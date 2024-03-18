@@ -1,0 +1,69 @@
+
+<html lang="en" class="h-100">
+{% extends 'admin/base/base.html' %}
+{% load static %}
+   
+    
+{% block body %}
+
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+									<div class="text-center mb-3">
+                                        <h2 style="color:white">Admin EcomApp</h2>
+									</div>
+                                    <h4 class="text-center mb-4 text-white">Sign in your Admin panel</h4>
+                                    <form  id="signss" method="post" >
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label class="mb-1 text-white"><strong>Admin Email</strong></label>
+                                            <input type="email" id="email" name="email" data-rule-required="true" class="form-control" >
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="mb-1 text-white"><strong>Password</strong></label>
+                                            <input data-rule-required="true" name="password" type="password" class="form-control">
+                                        </div>
+                                        <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                            <div class="form-group">
+                                               <div class="custom-control custom-checkbox ms-1 text-white">
+													<input data-rule-required="true" type="checkbox" name="term" class="custom-control-input" id="basic_checkbox_1">
+													<label class="custom-control-label" for="basic_checkbox_1">Remember my preference</label>
+												</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <a class="text-white" href="/admin/forgot-password/">Forgot Password?</a>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" onclick="sendMessage()" class="btn bg-white text-primary btn-block">Log In</button>
+                                        </div>
+                                    </form>
+                                    <div class="new-account mt-3">
+                                        {% comment %} <p class="text-white">Don't have an account? <a class="text-white" href="/signup/">Sign up</a></p> {% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>  
+    function sendMessage(){
+        if(!$('#signss').valid()){
+            return ;
+        } 
+    }
+</script> 
+{% endblock body %}
+</html>

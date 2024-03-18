@@ -1,0 +1,64 @@
+{% extends 'userpanel/basefile/base.html' %}
+{% load static %}
+{% block body%}
+   <div class="container-fluid">
+        <div class="container py-5">
+            <div class="p-5 bg-light rounded">
+                <div class="row g-4">
+                    <div class="col-6">
+                        <div class="text-center mx-auto" style="max-width: 700px;">
+                            <h1 class="text-primary">Register</h1>
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-12">
+                        <form id="signup" method="POST" class="">
+                            {% csrf_token %}
+                        <div class="col-lg-6">
+                            <input type="text" name="username" data-rule-required="true" class="w-100 form-control border-0 py-3 mb-4" placeholder="Your Name">
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="email" name="email" data-rule-required="true"class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your Email">
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="10" minlength="10" data-msg-minLength="Please enter a valid mobile number" name="mobile_number"  data-rule-required="true" class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your mobile number">
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="password"name="password" data-rule-required="true"   data-rule-PASSWORD="true" class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your password">
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="password" name="repassword"  data-rule-PASSWORD="true" data-rule-required="true"class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your password again">
+                        </div>
+                        <div class="col-lg-6">
+
+                            <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " onclick="signUp()" type="submit">Submit</button>
+                            <a href="/login/"   class="w-100 btn form-control border-secondary py-3 bg-white text-primary mt-5"  type="submit">Login</a>
+                        
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>  
+        function signUp(){
+        $.validator.addMethod("PASSWORD", function (value, element) {
+                    return /[\@\#\$\%\^\&\*\(\)\_\+\!]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[A-Z]/.test(value);
+                    }, "Passwords are 8-16 characters with uppercase letters, lowercase letters and atleast one number and one special character.");
+        
+        jQuery.validator.addMethod("noSpace", function(value, element) { 
+        if(value.indexOf(" ")==0){
+            return false;
+        }
+        return true;
+            }, "No space please and don't leave it empty");
+            if(!$('#signup').valid()){
+                return ;
+            } 
+        }
+        
+    </script> 
+{% endblock body%}
+

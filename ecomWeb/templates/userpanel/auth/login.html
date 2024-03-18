@@ -1,0 +1,45 @@
+{% extends 'userpanel/basefile/base.html' %}
+{% load static %}
+{% block body%}
+   <div class="container-fluid">
+        <div class="container py-5">
+            <div class="p-5 bg-light rounded">
+                <div class="row g-4">
+                    <div class="col-6">
+                        <div class="text-center mx-auto" style="max-width: 700px;">
+                            <h1 class="text-primary">Login</h1>
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-12">
+                        <form id="signup" method="POST" class="">
+                            {% csrf_token %}
+                    
+                        <div class="col-lg-6">
+                            <input type="email" name="email" data-rule-required="true"class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your Email">
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <input type="password"name="password" data-rule-required="true" class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your password">
+                        </div>
+                        
+                        <div class="col-lg-6">
+
+                            <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " onclick="signUp()" type="submit">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>  
+        function signUp(){
+            if(!$('#signup').valid()){
+                return ;
+            } 
+        }
+        
+    </script> 
+{% endblock body%}
+

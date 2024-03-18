@@ -1,0 +1,204 @@
+
+{% extends 'admin/base/base.html' %}
+{% load static %}
+<html lang="en">
+{% block body %} 
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="main-wrapper">
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        {% include 'admin/base/nav-header.html' %}
+		{% include 'admin/base/header.html' %}
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+       <div class="deznav">
+            <div class="deznav-scroll">
+				{% include 'admin/base/sidebar.html' %}
+			</div>
+        </div>
+		<!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Create Product</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    <form class="needs-validation" id="product" method="POST"enctype="multipart/form-data">
+										{% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Tags
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <select  class="form-select" id="category">
+                                                            <option  disabled selected >Please select Category</option>
+                                                            {% for i in category %}
+                                                            <option id="category_{{i.id}}" value="{{i.id}}">{{i.name}}</option>
+                                                            {% endfor %}
+                                                        
+                                                        </select>	
+                                                        <div class="invalid-feedback">
+                                                            Please enter category name.
+                                                        </div>
+                                                    </div>
+                                                </div>            
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Name
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+														<input data-rule-required="true" name="name" type="text" class="form-control" id="name"  placeholder="Enter a product Name.." required>
+														<div class="invalid-feedback">
+															Please enter a Product Name.
+														</div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Image
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+														<input data-rule-required="true" name="image" type="file" class="form-control" id="image"  placeholder="Enter a image" required>
+														<div class="invalid-feedback">
+															Please enter a Product image.
+														</div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Price
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+														<input data-rule-required="true" name="price" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="price"  placeholder="Enter a product price.." required>
+														<div class="invalid-feedback">
+															Please enter a Product price.
+														</div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Stock
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+														<input data-rule-required="true" name="stock" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="stock"  placeholder="Enter a product stock.." required>
+														<div class="invalid-feedback">
+															Please enter a Product stock.
+														</div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Tags
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <select  class="form-select" id="tags" multiple>
+                                                            <option  disabled selected >Please select tags</option>
+                                                            {% for i in tags %}
+                                                            <option id="tags_{{i.id}}" value="{{i.id}}">{{i.name}}</option>
+                                                            {% endfor %}
+                                                        
+                                                        </select>	
+                                                        <div class="invalid-feedback">
+                                                            Please enter category name.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <div class="col-lg-8">
+                                                        <button type="button" onclick="sendMessage()" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </div>
+                                             </div> 
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="http://dexignzone.com/" target="_blank">DexignZone</a> 2022</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+</body>
+<script>  
+    function sendMessage(){
+        if(!$('#product').valid()){
+            return ;
+		}else{
+			let name = $('#name').val()
+			let category = $('#category').val()
+			let price = $('#price').val()
+			let stock = $('#stock').val()
+			let tags = $('#tags').val()
+            let imageInput = $('#image')[0];  // Assuming #image is the file input
+            let imageFile = imageInput.files[0];
+            let formData = new FormData();
+            formData.append('name', name);
+            formData.append('category', category);
+            formData.append('image', imageFile);
+            formData.append('price', price);
+            formData.append('stock', stock);
+
+            if (tags) {
+                tags.forEach(tag => {
+                    formData.append('tags', tag);
+                    
+                });
+            }
+            console.log("image",image)
+			let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+			$.ajax({
+                type: "POST",
+                url: "/admin/add-product/",
+                headers: { 'X-CSRFToken': csrftoken },
+                data: formData,
+                processData: false,  // Important! Prevent jQuery from processing the data
+                contentType: false,  
+                success: function (res) {
+					toastr.success(res.message);
+					$('#product').trigger("reset");                  
+                  
+                },
+                error: function (res) {
+					toastr.error(res.responseJSON.message);                  
+                 
+                },
+      
+              });
+            
+		}
+        
+    }   
+</script> 
+{% endblock body %}
+</html>

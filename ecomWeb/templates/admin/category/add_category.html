@@ -1,0 +1,148 @@
+{% extends 'admin/base/base.html' %}
+{% load static %}
+<html lang="en">
+{% block body %} 
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        {% include 'admin/base/nav-header.html' %}
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+		{% include 'admin/base/header.html' %}
+       
+       <div class="deznav">
+            <div class="deznav-scroll">
+				{% include 'admin/base/sidebar.html' %}	
+			</div>
+        </div>
+        <!--**********************************
+            Sidebar end
+    
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Create Category</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    <form class="needs-validation" id="category" method="POST">
+										{% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <div class="mb-3 row">
+                                                    <label class="col-lg-4 col-form-label" for="validationCustom01">Category Name
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+														<input data-rule-required="true" name="category_name" type="text" class="form-control" id="category_name"  placeholder="Enter a Category Name.." required>
+														<div class="invalid-feedback">
+															Please enter a Category Name.
+														</div>
+                                                    </div>
+                                                </div>
+												<div class="mb-3 row" >
+														<label class="col-lg-4 col-form-label" for="validationCustom01">Category
+															<span class="text-danger">*</span>
+														</label>
+														<div class="col-lg-6">
+															<select  class="form-select" id="sub_category">
+																<option  disabled selected >Please select category</option>
+																{% for i in category %}
+																<option value="{{i.id}}">{{i.name}}</option>
+																{% endfor %}
+															
+															</select>														
+															<div class="invalid-feedback">
+																Please enter category name.
+															</div>
+														</div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <div class="col-lg-8">
+                                                        <button type="button" onclick="sendMessage()" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="http://dexignzone.com/" target="_blank">DexignZone</a> 2022</p>
+            </div>
+        </div>
+    </div>
+  
+    
+</body>
+<script>  
+    function sendMessage(){
+        if(!$('#category').valid()){
+            return ;
+		}
+        else{
+			let category_name = $('#category_name').val()
+			let sub_category = $('#sub_category').val()
+			let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+			$.ajax({
+                type: "POST",
+                url: "/admin/add-category/",
+                headers: { 'X-CSRFToken': csrftoken },
+                data:
+                {
+					name: category_name,
+					parent:sub_category
+      
+                },
+                success: function (res) {
+					toastr.success(res.message);
+					$('#category').trigger("reset");                  
+                  
+                },
+                error: function (res) {
+					toastr.error(res.responseJSON.message);                  
+                 
+                },
+      
+              });
+            
+		}
+        
+    }
+</script> 
+{% endblock body %}
+</html>
